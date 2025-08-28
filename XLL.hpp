@@ -14,8 +14,8 @@ struct XorLinkedList {
        Node *m_both;
 
 
-       explicit Node(const T &val = T(), T *both = nullptr);
-       explicit Node(T &&val, T *both = nullptr) noexcept;
+       explicit Node(const T &val = T(), Node *both = nullptr);
+       explicit Node(T &&val, Node *both = nullptr) noexcept;
        ~Node();
    };
 public:
@@ -34,7 +34,7 @@ public:
 
 
    // static method for Node::m_both pointer
-   static T *XOR(const Node *rhs, const Node *lhs);
+   static Node *XOR(const Node *rhs, const Node *lhs);
 
 
    // Ctors and Dtor
@@ -170,13 +170,13 @@ public:
         return *this;
       }
 
-      const_iterator& operator++(int) {
+      const_iterator operator++(int) {
         const_iterator tmp = *this;
         ++(*this);
         return tmp;
       }
 
-      const_iterator& operator--(int) {
+      const_iterator operator--(int) {
         const_iterator tmp = *this;
         --(*this);
         return tmp;
@@ -222,15 +222,16 @@ public:
         Node* next = XOR(m_cur, m_prev->both);
         m_cur = m_prev;
         m_prev = next;
+        return *this;
       }
 
-      iterator& operator++(int) {
+      iterator operator++(int) {
         iterator tmp = *this;
         ++(*this);
         return tmp;
       }
 
-      iterator& operator--(int) {
+      iterator operator--(int) {
         iterator tmp = *this;
         --(*this);
         return tmp;
@@ -281,23 +282,23 @@ public:
             return *this;
         }
 
-        reverse_iterator& operator++(int) {
+        reverse_iterator operator++(int) {
             reverse_iterator tmp = *this;
             ++(*this);
             return tmp;
         }
 
-        reverse_iterator& operator--(int) {
-            reverse_iteratortmp = *this;
+        reverse_iterator operator--(int) {
+            reverse_iterator tmp = *this;
             --(*this);
             return tmp;
         }
 
-        bool operator==(const reverse_iterator& other) {
+        bool operator==(const reverse_iterator& other) const {
             return m_prev == other.m_prev && m_cur == other.m_cur;
         }
 
-        bool operator!=(const reverse_iterator& other) {
+        bool operator!=(const reverse_iterator& other) const{
             return !(*this == other);
         }
     };
@@ -326,30 +327,30 @@ public:
             return *this;
         }
 
-        cosnt_reverse_iterator& operator--() {
+        const_reverse_iterator& operator--() {
             Node* next = XOR(m_prev, m_cur->m_both);
             m_prev = m_cur;
             m_cur = next;
             return *this;
         }
 
-        const_reverse_iterator& operator++(int) {
+        const_reverse_iterator operator++(int) {
             const_reverse_iterator tmp = *this;
             ++(*this);
             return tmp;
         }
 
-        const_reverse_iterator& operator--(int) {
+        const_reverse_iterator operator--(int) {
             const_reverse_iterator tmp = *this;
             --(*this);
             return tmp;
         }
 
-        bool operator==(const const_reverse_iterator& other) {
+        bool operator==(const const_reverse_iterator& other) const {
             return m_prev == other.m_prev && m_cur == other.m_cur;
         }
 
-        bool operator!=(const const_reverse_iterator& other) {
+        bool operator!=(const const_reverse_iterator& other) const{
             return !(*this == other);
         }
 
